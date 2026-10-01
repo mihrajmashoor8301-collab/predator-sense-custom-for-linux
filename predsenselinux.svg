@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#202a38"/>
+      <stop offset="1" stop-color="#0b0f16"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#16c9d2"/>
+      <stop offset="1" stop-color="#6d70ff"/>
+    </linearGradient>
+  </defs>
+  <path d="M64 5 112 32v64l-48 27L16 96V32z" fill="url(#shell)" stroke="#46556a" stroke-width="4"/>
+  <path d="M64 17 102 38v52l-38 21L26 90V38z" fill="none" stroke="url(#edge)" stroke-width="3"/>
+  <text x="64" y="77" fill="#16c9d2" font-family="sans-serif" font-size="38" font-weight="800" text-anchor="middle">PS</text>
+  <path d="M40 95h48" stroke="url(#edge)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="64" cy="105" r="4" fill="#f04452"/>
+</svg>

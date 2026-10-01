@@ -1,0 +1,14 @@
+# Local Git metadata used while preparing the new remote repository
+.repo-work/
+
+# Generated packages and temporary build outputs
+dist/
+*.zip
+*.deb
+*.deb.sha256
+
+# Local backups, Python caches, and editor/OS files
+backup*/
+__pycache__/
+*.py[cod]
+.DS_Store

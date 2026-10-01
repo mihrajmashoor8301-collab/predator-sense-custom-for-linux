@@ -1,0 +1,29 @@
+[Unit]
+Description=Linuwu-Sense performance profile helper
+After=systemd-tmpfiles-setup.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/etc/default/linuwu-profile-helper
+RuntimeDirectory=linuwu-profile-helper
+RuntimeDirectoryMode=0750
+ExecStart=/usr/bin/python3 /usr/local/lib/linuwu-profile-helper/linuwu_profile_helper.py
+Restart=on-failure
+RestartSec=1
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=false
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+ReadWritePaths=/run/linuwu-profile-helper /sys/devices/platform/acer-wmi/platform-profile/platform-profile-0/profile
+
+[Install]
+WantedBy=multi-user.target

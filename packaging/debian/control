@@ -1,0 +1,11 @@
+Package: predsenselinux
+Version: 0.1.12
+Section: utils
+Priority: optional
+Architecture: all
+Depends: adduser, init-system-helpers, python3, python3-tk, systemd, util-linux
+Maintainer: PredSenseLinux contributors
+Description: Acer Predator and Nitro control center for Linux
+ PredSenseLinux provides a desktop control center for supported Acer laptops
+ using the Linuwu-Sense kernel module. It includes fan, profile, four-zone
+ keyboard lighting, battery and firmware controls.
