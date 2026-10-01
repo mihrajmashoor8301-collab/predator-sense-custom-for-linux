@@ -37,6 +37,8 @@ On this project checkout, run:
 
 This creates the Debian package in `dist/PredSenseLinux/` and a self-extracting installer in `dist/Completed Projects/PredSenseLinux-Installer.run`. On a fresh target laptop, **that `.run` file is the only project file you need to copy**. Run it as your normal desktop user:
 
+The prebuilt installer is available on the [GitHub Releases page](https://github.com/mihrajmashoor8301-collab/predator-sense-custom-for-linux/releases).
+
 ```bash
 chmod +x PredSenseLinux-Installer.run
 ./PredSenseLinux-Installer.run

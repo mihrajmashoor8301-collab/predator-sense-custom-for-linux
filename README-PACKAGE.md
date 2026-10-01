@@ -14,7 +14,7 @@ The kernel module is third-party reverse-engineered software. It is not bundled 
 
 ## Install
 
-On a fresh laptop, **`PredSenseLinux-Installer.run` is the only project file you need to copy**. Download it from the distribution bundle (or build that bundle from this repository), then run it as your normal desktop user, without `sudo`:
+On a fresh laptop, **`PredSenseLinux-Installer.run` is the only project file you need to copy**. Download it from the [GitHub Releases page](https://github.com/mihrajmashoor8301-collab/predator-sense-custom-for-linux/releases) or build the distribution bundle from this repository, then run it as your normal desktop user, without `sudo`:
 
 ```bash
 chmod +x PredSenseLinux-Installer.run
