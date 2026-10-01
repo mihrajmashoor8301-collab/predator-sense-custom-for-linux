@@ -6,28 +6,21 @@ Available controls depend on the laptop firmware and the loaded module. The GUI 
 
 ## Requirements
 
-- A supported Acer Predator laptop. You can install the Linuwu-Sense kernel module yourself first, or use the package's opt-in module installer described below.
-- A Linux desktop session with systemd.
-- Python 3, Tkinter, Git, and `sg` (provided by `util-linux`). On Kali, Debian, and Ubuntu, install them with:
+- A supported Acer Predator or Nitro laptop. Available controls vary by model and firmware.
+- A Debian-based Linux distribution with `apt`/`apt-get`, a graphical desktop, and systemd for the packaged install.
+- Internet access and `sudo` access for the installer to install system dependencies and fetch the Linuwu-Sense kernel module source.
+- Headers matching the currently running kernel. The installer attempts to install them through `apt`.
+- Secure Boot disabled for the automatic module installation, or manual module signing and enrollment.
 
-  ```bash
-  sudo apt update
-  sudo apt install git python3 python3-tk util-linux
-  ```
-- `sudo` access for installing the system service and desktop launcher.
-- The module's expected sysfs paths, including `/sys/devices/platform/acer-wmi/predator_sense` and `/sys/devices/platform/acer-wmi/platform-profile/platform-profile-0/profile`.
-
-The kernel-module installer additionally needs `build-essential`, Git, `mokutil`, and headers for the currently running kernel. It installs these through `apt` when requested.
+The kernel module is third-party software from the [Linuwu-Sense project](https://github.com/0x7375646F/Linuwu-Sense). It is not embedded in the PredSenseLinux installer: the installer downloads the module source and builds it for the target laptop's running kernel. Installing it replaces the built-in `acer_wmi` driver. Review the upstream model compatibility information before installing it.
 
 GPU temperature is read using `nvidia-smi` when it is installed and the NVIDIA driver is working. Without it, the GPU temperature is shown as `N/A`; fan RPM and CPU temperature discovery do not depend on NVIDIA.
 
 ## Clone the repository
 
-Replace the URL below with the GitHub or GitLab URL where this project is hosted:
-
 ```bash
-git clone <REPOSITORY_URL> linuwu-sense-gui
-cd linuwu-sense-gui
+git clone https://github.com/mihrajmashoor8301-collab/predator-sense-custom-for-linux.git
+cd predator-sense-custom-for-linux
 ```
 
 If you downloaded a source archive instead, extract it and `cd` into the extracted project directory.
@@ -42,26 +35,23 @@ On this project checkout, run:
 ./build-package.sh
 ```
 
-This creates the Debian package and checksums in `dist/PredSenseLinux/`, plus a downloadable self-extracting installer and complete distribution archive under `dist/Completed Projects/` and `dist/PredSenseLinux-Complete.zip`. The single-file installer uses APT to install the GUI and its dependencies, then installs Linuwu-Sense if its controls are not already present. It checks matching kernel headers and Secure Boot before building the module. The upstream module installer replaces the built-in `acer_wmi` driver.
-
-Make the installer executable and run it as your regular desktop user. If Linuwu-Sense is already installed, use:
+This creates the Debian package in `dist/PredSenseLinux/` and a self-extracting installer in `dist/Completed Projects/PredSenseLinux-Installer.run`. On a fresh target laptop, **that `.run` file is the only project file you need to copy**. Run it as your normal desktop user:
 
 ```bash
-chmod +x install.sh
-./install.sh
+chmod +x PredSenseLinux-Installer.run
+./PredSenseLinux-Installer.run
 ```
 
-If the kernel module is not installed, use the opt-in all-in-one command:
+The installer embeds the PredSenseLinux Debian package and setup script. It downloads required OS packages through APT and, unless the expected Linuwu-Sense controls are already available, clones the module source from GitHub and builds it for the target laptop. **Internet access is required; the kernel module itself and OS dependencies are not bundled in the `.run` file.** The target needs matching kernel headers. Automatic module installation stops when Secure Boot is enabled. The module install replaces the built-in `acer_wmi` driver.
+
+To install from a source checkout instead, run one of these as your normal user. The first installs only the GUI and helper when the module is already installed; the second also downloads and installs the module:
 
 ```bash
+./install.sh
 ./install.sh --with-kernel-module
 ```
 
-This first runs `install-kernel-module.sh`, which clones the [upstream Linuwu-Sense module](https://github.com/0x7375646F/Linuwu-Sense), builds it for the currently running kernel, and invokes its upstream `make install`. That upstream installer unloads and blacklists the built-in `acer_wmi` driver before installing/loading `linuwu_sense`; the script explains this and asks before proceeding. The module is third-party, reverse-engineered software with model-dependent support, so check the upstream compatibility information for your exact laptop before choosing this option.
-
-The module build needs matching headers for `uname -r`. On Kali, install or update the running kernel's matching headers if the script reports they are missing, reboot into that kernel, and rerun the command. The module is installed for the current kernel; after a kernel update, rebuild/reinstall it for the new running kernel.
-
-The automated module script stops if it detects Secure Boot enabled. Disable Secure Boot in firmware to use this option, or manually build, sign, and enroll the module by following the upstream `module_signing_readme`. The GUI and helper are not installed until the module step succeeds.
+`install.sh --with-kernel-module` fetches and builds the upstream module before installing the GUI. If matching headers are unavailable, install headers for `uname -r`, reboot into that kernel, and retry. After a kernel update, rebuild/reinstall the module. With Secure Boot enabled, manually build, sign, and enroll the module by following the upstream signing instructions.
 
 The script asks `sudo` to install the GUI under `/opt/linuwu-gui`, install the root-owned profile helper under `/usr/local/lib/linuwu-profile-helper`, add your account to the `linuwu_sense` group, install the systemd unit and desktop entry, then enable and start the helper service. Enter your own password at the sudo prompt. **Do not launch the GUI with `sudo`.**
 
