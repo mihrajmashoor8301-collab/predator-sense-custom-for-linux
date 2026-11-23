@@ -115,6 +115,11 @@ sudo rm -rf "$STAGE"
 sudo install -d "$STAGE"
 sudo cp -a "$WORKDIR/src/." "$STAGE/"
 sudo rm -rf "$STAGE/.git"
+# Two fixes from the local tree that upstream 4483b6c does not have: scancode
+# 0x87 was bound to KEY_POWER (could shut the laptop down), and the hotkey
+# handler logged its state on every keypress. No-op if upstream fixes them.
+sudo sed -i '/KE_KEY, 0x87, {KEY_POWER}/d' "$STAGE/src/linuwu_sense.c"
+sudo sed -i 's/pr_info("device state:/pr_debug("device state:/' "$STAGE/src/linuwu_sense.c"
 sudo make -C "$STAGE" clean >/dev/null 2>&1 || true
 
 say "Registering with DKMS"
