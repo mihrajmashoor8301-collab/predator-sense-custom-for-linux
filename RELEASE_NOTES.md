@@ -1,4 +1,4 @@
-# PredSenseLinux 1.0.0
+# PredSenseLinux 1.1.0
 
 ## Highlights
 
@@ -24,7 +24,7 @@ chmod +x PredSenseLinux-Installer.run
 
 ## Installer assets in this release
 
-- `predsenselinux_1.0.0_all.deb` — package with the GUI, helper and installer
+- `predsenselinux_1.1.0_all.deb` — package with the GUI, helper and installer
   scripts (install with `sudo apt install`).
 - `PredSenseLinux-Installer.run` — the single-file installer (verified payload
   checksum).

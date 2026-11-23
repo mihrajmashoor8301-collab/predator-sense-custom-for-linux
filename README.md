@@ -1,4 +1,4 @@
-# PredSenseLinux 1.0.0
+# PredSenseLinux 1.1.0
 
 A Tkinter desktop control center for supported Acer Predator and Nitro laptops using the
 Linuwu-Sense kernel module. The gaming-inspired interface groups live telemetry, cooling,
@@ -14,8 +14,9 @@ keyboard idle timeout, battery limiter and calibration, USB charging thresholds,
 animation/sound, and LCD override. The AC and battery profile choices are saved separately and
 switched automatically while the GUI is running. Per-key RGB is not supported by the module.
 
-## What changed in 1.0.0
+## What changed in 1.1.0
 
+- **Updated kernel driver baseline.** Pinned Linuwu-Sense `4483b6c` (strscpy for Linux 7.2+, platform_profile_ops for 6.17+, newer Acer model IDs) with the `0x87 -> KEY_POWER` keymap stripped and hotkey `pr_info` spam demoted before the DKMS build.
 - **The kernel module is installed through DKMS.** It is rebuilt automatically after every
   `apt upgrade` that pulls a new kernel, instead of disappearing until you reinstall it by hand.
 - **Pinned, current driver source.** The installer fetches Linuwu-Sense commit `4483b6c`, which
@@ -74,7 +75,7 @@ automatically afterwards.
 ### Debian package
 
 ```bash
-sudo apt install ./predsenselinux_1.0.0_all.deb
+sudo apt install ./predsenselinux_1.1.0_all.deb
 /usr/share/predsenselinux/install-kernel-module.sh
 ```
 

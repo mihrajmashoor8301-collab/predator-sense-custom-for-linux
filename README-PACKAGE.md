@@ -1,4 +1,4 @@
-# PredSenseLinux 1.0.0 Debian package
+# PredSenseLinux 1.1.0 Debian package
 
 PredSenseLinux is a desktop control center for supported Acer Predator and Nitro laptops. It uses
 the Linuwu-Sense kernel module for hardware access. This package installs the GUI, the restricted
@@ -31,7 +31,7 @@ the blue MOK manager screen (`Enroll MOK -> Continue -> Reboot`).
 To install the package on its own:
 
 ```bash
-sudo apt install ./predsenselinux_1.0.0_all.deb
+sudo apt install ./predsenselinux_1.1.0_all.deb
 /usr/share/predsenselinux/install-kernel-module.sh
 ```
 
