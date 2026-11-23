@@ -2,6 +2,7 @@
 Name=PredSenseLinux
 Comment=Acer Predator Linux fan, lighting, and performance control
 Exec=/opt/linuwu-gui/launch.sh
+TryExec=/opt/linuwu-gui/launch.sh
 Icon=predsenselinux
 Terminal=false
 Type=Application

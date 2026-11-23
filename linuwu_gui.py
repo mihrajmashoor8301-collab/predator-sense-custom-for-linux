@@ -2,6 +2,7 @@
 """PredSenseLinux desktop control center for Linuwu-Sense."""
 import json
 import math
+import os
 import pathlib
 import shutil
 import shlex
@@ -1051,15 +1052,36 @@ class SenseApp(tk.Tk):
         self._labeled_combo(usb, "Stop at", self.usb_var, [("0", "Disabled"), ("10", "10%"), ("20", "20%"), ("30", "30%")])
         ttk.Button(usb, text="Apply", command=self.set_usb).pack(anchor="e", pady=(10, 0))
         usb.pack(fill="x", pady=12)
-        misc = self.card(page, "Boot & display", "These firmware options are available only on supported models.")
-        self.boot_var = tk.BooleanVar(value=read(SENSE / "boot_animation_sound", "0") == "1")
-        self.lcd_var = tk.BooleanVar(value=read(SENSE / "lcd_override", "0") == "1")
-        ttk.Checkbutton(misc, text="Boot animation and sound", variable=self.boot_var, command=lambda: write(SENSE / "boot_animation_sound", int(self.boot_var.get()), "boot animation and sound")).pack(anchor="w", pady=4)
-        ttk.Checkbutton(misc, text="LCD response override", variable=self.lcd_var, command=lambda: write(SENSE / "lcd_override", int(self.lcd_var.get()), "LCD override")).pack(anchor="w", pady=4)
-        misc.pack(fill="x")
+        # Predator-only firmware switches. Nitro models do not expose these
+        # attributes, so the card is hidden instead of offering dead toggles.
+        has_boot = (SENSE / "boot_animation_sound").exists()
+        has_lcd = (SENSE / "lcd_override").exists()
+        if has_boot or has_lcd:
+            misc = self.card(page, "Boot & display", "These firmware options are available only on supported models.")
+            if has_boot:
+                self.boot_var = tk.BooleanVar(value=read(SENSE / "boot_animation_sound", "0") == "1")
+                ttk.Checkbutton(misc, text="Boot animation and sound", variable=self.boot_var, command=lambda: write(SENSE / "boot_animation_sound", int(self.boot_var.get()), "boot animation and sound")).pack(anchor="w", pady=4)
+            if has_lcd:
+                self.lcd_var = tk.BooleanVar(value=read(SENSE / "lcd_override", "0") == "1")
+                ttk.Checkbutton(misc, text="LCD response override", variable=self.lcd_var, command=lambda: write(SENSE / "lcd_override", int(self.lcd_var.get()), "LCD override")).pack(anchor="w", pady=4)
+            misc.pack(fill="x")
 
     def set_profile(self, value=None):
         value = value or self.profile_prefs.get("ac", "balanced")
+        if not (PROFILE / "profile").exists():
+            messagebox.showerror(
+                "PredSenseLinux",
+                "The Linuwu-Sense kernel module is not loaded, so the performance "
+                "profile cannot be changed.\n\nInstall it with:\n"
+                "  sudo /usr/share/predsenselinux/install-kernel-module.sh\n"
+                "then reopen PredSenseLinux.")
+            return
+        if not os.path.exists(PROFILE_SOCKET):
+            messagebox.showerror(
+                "PredSenseLinux",
+                "The profile helper service is not running.\n\nStart it with:\n"
+                "  sudo systemctl enable --now linuwu-profile-helper.service")
+            return
         try:
             with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
                 client.settimeout(3)
